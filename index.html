@@ -7,45 +7,28 @@
   <meta name="description" content="Pay securely for your travel booking via PayPal." />
   <link rel="icon" href="https://www.paypalobjects.com/webstatic/icon/favicon.ico">
   <style>
-    :root {
-      --brand:#0070ba;
-      --bg1:#f7f9fc;
-      --bg2:#e7eef8;
-      --text:#2d2d2d;
-    }
+    :root { --brand:#0070ba; --bg1:#f7f9fc; --bg2:#e7eef8; --text:#2d2d2d; }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-      color:var(--text);
-      background: linear-gradient(180deg,var(--bg1),var(--bg2));
-      min-height:100vh;
-      display:flex;align-items:center;justify-content:center;padding:24px;
-    }
-    .card{
-      width:100%;max-width:560px;
-      background:#fff;border-radius:18px;padding:28px 28px 32px;
-      box-shadow:0 10px 30px rgba(0,0,0,.08);
-    }
-    .brand{
-      display:flex;align-items:center;gap:14px;margin-bottom:8px;
-    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--text);
+         background:linear-gradient(180deg,var(--bg1),var(--bg2));min-height:100vh;
+         display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:560px;background:#fff;border-radius:18px;padding:28px 28px 32px;
+          box-shadow:0 10px 30px rgba(0,0,0,.08)}
+    .brand{display:flex;align-items:center;gap:14px;margin-bottom:8px}
     .brand img{width:56px;height:56px;border-radius:12px;object-fit:cover}
     h1{margin:0 0 6px 0;font-size:26px;color:var(--brand)}
-    p{margin:0 0 18px 0;line-height:1.6}
-    .hero{
-      width:100%;height:180px;border-radius:14px;overflow:hidden;margin:14px 0 18px 0;
-      background:#ddd;
-    }
+    p{margin:0 0 18px;line-height:1.6}
+    .hero{width:100%;height:180px;border-radius:14px;overflow:hidden;margin:14px 0 18px;background:#ddd}
     .hero img{width:100%;height:100%;object-fit:cover}
-    .paypal{
-      display:flex;align-items:center;justify-content:center;margin-top:14px;
-    }
+    .box{background:#f9fbff;border:1px solid #e1e9f7;border-radius:12px;padding:16px;margin-top:8px}
+    label{font-weight:600}
+    input[type="number"], input[type="text"]{width:100%;height:44px;border:1px solid #d7dcea;border-radius:10px;
+      padding:0 12px;margin-top:6px}
+    .paypal{display:flex;align-items:center;justify-content:center;margin-top:14px}
     .fine{font-size:12px;color:#666;margin-top:12px;text-align:center}
-    .footer{
-      margin-top:18px;font-size:14px;color:#555;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
-    }
+    .footer{margin-top:18px;font-size:14px;color:#555;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
     .footer a{color:var(--brand);text-decoration:none}
+    .hidden{display:none}
   </style>
 </head>
 <body>
@@ -54,9 +37,71 @@
       <img src="https://images.unsplash.com/photo-1502920514313-52581002a659?q=80&w=300&auto=format&fit=crop" alt="Travel">
       <div>
         <h1>Sanya Travel UAE — Payment</h1>
-        <p>Pay securely for your travel booking via PayPal.</p>
+        <p>Pay securely for your booking via PayPal.</p>
       </div>
     </div>
 
     <div class="hero">
-      <img src="https://images.unsplash
+      <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1600&auto=format&fit=crop" alt="Travel image">
+    </div>
+
+    <!-- Preferred: Hosted Buttons container -->
+    <div id="paypal-hosted" class="paypal"></div>
+
+    <!-- Fallback: classic PayPal form (works without hostedButtonId) -->
+    <div id="paypal-fallback" class="box hidden">
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_xclick">
+        <!-- Your PayPal business email -->
+        <input type="hidden" name="business" value="sanyatraveluae@gmail.com">
+        <input type="hidden" name="item_name" value="Travel Booking Payment">
+        <input type="hidden" name="currency_code" value="USD">
+
+        <label for="reference">Reference (Booking ID / Name)</label>
+        <input id="reference" type="text" name="item_number" placeholder="e.g. GT-2025-001 or John Doe" required>
+
+        <label for="amount">Amount (USD)</label>
+        <input id="amount" type="number" name="amount" placeholder="e.g. 500.00" step="0.01" required>
+
+        <div class="paypal">
+          <input type="image"
+                 src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif"
+                 border="0" name="submit" alt="Pay with PayPal">
+        </div>
+        <p class="fine">Processed securely by PayPal. We never store your card details.</p>
+      </form>
+    </div>
+
+    <p class="fine">If the button does not appear, the fallback form above will display automatically.</p>
+
+    <div class="footer">
+      <span>✉️ sanyatraveluae@gmail.com</span>
+    </div>
+  </main>
+
+  <!-- Your hosted-buttons SDK (USD) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAohVu0PkwZuYqBa3TiAqCKvOprVZsqXeD4BC8r2fJqVY0rfqLp1EwQFAJKZS4QBCSpxydLtR-Gm3reZ0&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+  <script>
+    (async function () {
+      const container = '#paypal-hosted';
+      const fallback = document.getElementById('paypal-fallback');
+
+      try {
+        // 👉 Replace with your REAL Hosted Button ID from PayPal Buttons dashboard
+        const HOSTED_BUTTON_ID = 'HCQ7RXSMA46E4';
+
+        if (!HOSTED_BUTTON_ID) throw new Error('No hostedButtonId set');
+
+        await paypal.HostedButtons({ hostedButtonId: HOSTED_BUTTON_ID }).render(container);
+
+        // If render succeeds, make sure fallback stays hidden
+        fallback.classList.add('hidden');
+      } catch (e) {
+        // If hosted buttons cannot render, show fallback classic form
+        console.warn('Hosted Buttons not available -> showing fallback form:', e.message);
+        fallback.classList.remove('hidden');
+      }
+    })();
+  </script>
+</body>
+</html>
